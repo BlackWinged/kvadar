@@ -1,47 +1,42 @@
 version: '3.8'
 
 services:
-  elasticsearch-node1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
-    environment:
-      - node.name=elasticsearch-node1
-      - cluster.name=es-cluster
-      - discovery.seed_hosts=elasticsearch-node2
-      - cluster.initial_master_nodes=elasticsearch-node1,elasticsearch-node2
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
-      - xpack.security.enabled=false
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
-    networks:
-      - es-network
-    deploy:
-      mode: replicated
-      replicas: 1
+      - esdata01:/usr/share/elasticsearch/data
+    # deploy:
+    #   mode: replicated
+    #   resources:
+    #     limits:
+    #       memory: 4G
     ports:
       - 9200:9200
       - 9300:9300
-
-  elasticsearch-node2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
     environment:
-      - node.name=elasticsearch-node2
-      - cluster.name=es-cluster
-      - discovery.seed_hosts=elasticsearch-node1
-      - cluster.initial_master_nodes=elasticsearch-node1,elasticsearch-node2
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
-      - xpack.security.enabled=false
-    volumes:
-      - esdata2:/usr/share/elasticsearch/data
+      # - node.name=es01
+      # - cluster.name=docker-cluster
+      # - discovery.seed_hosts=es02,es03
+      - discovery.type=single-node
+      # - ELASTIC_PASSWORD=tesis
+      # - bootstrap.memory_lock=true
+      # - xpack.security.enabled=false
+      # - xpack.security.http.ssl.enabled=false
+      # - xpack.security.http.ssl.key=certs/es01/es01.key
+      # - xpack.security.http.ssl.certificate=certs/es01/es01.crt
+      # - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      # - xpack.security.transport.ssl.enabled=false
+      # - xpack.security.transport.ssl.key=certs/es01/es01.key
+      # - xpack.security.transport.ssl.certificate=certs/es01/es01.crt
+      # - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      # - xpack.security.transport.ssl.verification_mode=certificate
+      # - xpack.license.self_generated.type=basic
+    # ulimits:
+    #   memlock:
+    #     soft: -1
+    #     hard: -1
     networks:
       - es-network
-    deploy:
-      mode: replicated
-      replicas: 1
-    ports:
-      - 9200:9200
-      - 9300:9300
 
   cerebro:
     image: lmenezes/cerebro:0.9.4
@@ -65,8 +60,14 @@ services:
       - ./data:/data
 
 volumes:
-  esdata1:
-  esdata2:
+  certs:
+    driver: local
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+  esdata03:
+    driver: local
 
 networks:
   es-network:
