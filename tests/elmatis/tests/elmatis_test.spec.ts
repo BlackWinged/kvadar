@@ -1,7 +1,5 @@
 import { test, expect, chromium } from '@playwright/test';
 
-const NavigationLinkDirectory = {};
-
 test('check all links', async ({ page }) => {
   await page.goto('https://elmatis.hr/');
   // Get all the links on the page
@@ -26,22 +24,32 @@ test('get started link', async ({ page }) => {
 
 
 async function GrabAllLinks(startingLinks, page) {
-  for (const link of startingLinks) {
-    if (!(await link in NavigationLinkDirectory)) {
+  for (let link of startingLinks) {
+    if (link != "#" && !link.includes("http") && !link.includes("ShoppingCart")) {
       try {
         console.log(`Opening URL: ${link}`);
-        
-        const pageLoc = await page.locator("[href='"+ link + "']");
 
-        await pageLoc.click();
-        const loc = await page.locator('a');
-        const links = await loc.evaluateAll(anchors => anchors.map(x => x.getAttribute("href")));
-
-        const filteredLinks = links.filter(x => x in NavigationLinkDirectory);
-        NavigationLinkDirectory[link.href] = 1;
-        if (filteredLinks.len > 0) {
-          GrabAllLinks(filteredLinks, page);
+        if (link.includes("javascript") && link.includes("aspx")){
+          link = link.split("'")[1];
+        } else if (link.includes("javascript")){
+          continue;
         }
+
+        await page.goto("https://elmatis.hr/" + link);
+        let loc = await page.locator('a');
+        let links = await loc.evaluateAll(anchors => anchors.map(x => x.getAttribute("href")));
+
+        for (let newLink of links){
+          if (!startingLinks.includes(newLink)){
+            startingLinks.push(newLink);
+          }
+        }
+
+        // let filteredLinks = links.filter(x => !(x in NavigationLinkDirectory));
+        // NavigationLinkDirectory[link] = 1;
+        // if (filteredLinks.length > 0) {
+        //   GrabAllLinks(filteredLinks, page);
+        // }
       } catch (error) {
         console.error(`Failed to open URL: ${link.href}`, error);
       }
