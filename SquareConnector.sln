@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SquareConnector", "SquareConnector\SquareConnector.csproj", "{5CFAE351-43A9-407D-BD17-86B82112F87C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SquareConnector", "SquareConnector\SquareConnector.csproj", "{5CFAE351-43A9-407D-BD17-86B82112F87C}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{32146641-C9A9-4FA0-B82C-272B449A19EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5CFAE351-43A9-407D-BD17-86B82112F87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CFAE351-43A9-407D-BD17-86B82112F87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CFAE351-43A9-407D-BD17-86B82112F87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32146641-C9A9-4FA0-B82C-272B449A19EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32146641-C9A9-4FA0-B82C-272B449A19EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32146641-C9A9-4FA0-B82C-272B449A19EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32146641-C9A9-4FA0-B82C-272B449A19EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

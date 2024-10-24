@@ -1,0 +1,35 @@
+services:
+  squareconnector:
+    image: ${DOCKER_REGISTRY-}squareconnector
+    build:
+      context: .
+      dockerfile: SquareConnector/Dockerfile
+
+
+  registry:
+      image: registry:2
+      ports:
+      - "5000:5000"
+      environment:
+        REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+      volumes:
+        - ./data:/data
+
+
+
+  sqlserver:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+      environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=YourStrong!Passw0rd
+      ports:
+        - "1433:1433"
+      volumes:
+        - sql_data:/var/opt/mssql
+
+volumes:
+  sql_data:
+
+networks:
+  es-network:
+    driver: overlay
